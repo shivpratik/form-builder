@@ -24,3 +24,5 @@
 - Folder and files for data and UI components should be abstracted and organized
 - Your solution should easily accommodate possible future requirement changes
 - (Bonus points) Using TypeScript for type checking
+- (Bonus points) Writing test cases for the components
+- (Bonus points) Using Redux for state management
