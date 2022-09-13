@@ -18,6 +18,7 @@
 - Each row of the table should have a "Details" button
   - Upon clicking the button, users will be navigated to the details page
   - Detail page should display all information of the transaction
+- If the API above is invalid, you can use the mock data in `./bank.json`.
 
 ## Coding skills assessment
 - Class and method names should clearly show their intent and responsibility
