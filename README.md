@@ -10,7 +10,7 @@
 - You can either create your own UI components or use online UI library (eg: Bootstrap / Material / Antd)
 
 ## Assignment
-- Build a frontend SPA with a table that displays bank data: https://api.sampleapis.com/fakebank/accounts
+- Build a frontend SPA with a table that displays bank data: https://github.com/fazz-interviews/frontend-bank-list/blob/main/bank.json
   - The table displays 10 records per page
   - The table allows users to filter the data with a date range filter
   - The table allows the data to be sorted by date
