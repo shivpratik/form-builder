@@ -156,7 +156,8 @@ label {
 .field {
   padding: 15px 25px;
 }
-.field + .field {
+.field + .field,
+.field-element + .field-element {
   margin-top: 15px;
 }
 .field:hover .btn-delete {
@@ -180,4 +181,8 @@ label {
 }
 .d-none {
   display: none;
+}
+.editable {
+  padding: 5px 0;
+  cursor: text;
 }

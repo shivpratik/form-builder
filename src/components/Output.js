@@ -3,18 +3,22 @@ import { useRef, useState } from "react";
 
 function Output(props) {
   const [fieldItems, setFieldItems] = useState([]);
-  const itemRef = useRef(null);
+  const initialValues = {};
+  const [formValues, setFormValues] = useState(initialValues);
+  // const itemRef = useRef(null);
   const dragItem = useRef();
   const dragOverItem = useRef();
 
   // Handle Drop
   const drop = (e) => {
     e.preventDefault();
+    const field_type = e.dataTransfer.getData("field_type");
     const field_id = e.dataTransfer.getData("field_id");
-
     if (field_id) {
-      setFieldItems([...fieldItems, field_id]);
+      setFieldItems([...fieldItems, { id: field_id, type: field_type }]);
+      setFormValues({ ...formValues, [field_id]: "" });
     }
+    console.log(formValues);
   };
 
   // add event for item can drop
@@ -53,6 +57,23 @@ function Output(props) {
     setFieldItems(_fieldItems);
   };
 
+  // Handle Change
+  const handleChange = (e) => {
+    // const { name, value } = e.target;
+    console.log(e);
+    // setFormValues({ ...formValues, [name]: value });
+  };
+
+  // Add Options
+  const addOptions = (e, id) => {
+    // const { name, value } = e.target;
+    setFormValues({
+      ...formValues,
+      [id]: [...formValues[id], { name: "age", label: "New Option" }],
+    });
+    console.log(formValues);
+  };
+
   return (
     <div
       id={props.id}
@@ -62,20 +83,34 @@ function Output(props) {
     >
       {fieldItems.length ? (
         fieldItems.map((item, index) => {
-          if (item === "text") {
+          if (item.type === "text") {
             return (
               <div
                 key={index}
-                id={item}
+                id={item.id}
+                data-type={item.type}
                 className="field form-field"
                 draggable="true"
                 onDragStart={(e) => (dragItem.current = index)}
-                ref={itemRef}
+                // ref={itemRef}
                 onDragEnter={(e) => (dragOverItem.current = index)}
                 onDragEnd={handleSort}
                 onDragOver={dragOver}
               >
-                <p>What is your name?</p>
+                <div
+                  className="editable"
+                  contentEditable
+                  suppressContentEditableWarning
+                  onBlur={(e) => handleChange(item.id)}
+                  onKeyPress={(e) => {
+                    if (e.key === "13" || e.key === "Enter") {
+                      e.preventDefault();
+                      e.target.blur();
+                    }
+                  }}
+                >
+                  What is your name?
+                </div>
                 <input
                   className="form-control"
                   type="text"
@@ -92,20 +127,51 @@ function Output(props) {
               </div>
             );
           }
-          if (item === "radio") {
+          if (item.type === "radio") {
             return (
               <div
                 key={index}
-                id={item}
+                id={item.id}
+                data-type={item.type}
                 className="field form-field"
                 draggable="true"
                 onDragStart={(e) => (dragItem.current = index)}
-                ref={itemRef}
+                // ref={itemRef}
                 onDragEnter={(e) => (dragOverItem.current = index)}
                 onDragEnd={handleSort}
                 onDragOver={dragOver}
               >
-                <p>What is your gender?</p>
+                <div
+                  className="editable"
+                  contentEditable
+                  suppressContentEditableWarning
+                  onBlur={(e) => console.log(e.currentTarget.textContent)}
+                  onKeyPress={(e) => {
+                    if (e.key === "13" || e.key === "Enter") {
+                      e.preventDefault();
+                      e.target.blur();
+                    }
+                  }}
+                >
+                  What is your gender?
+                </div>
+                {console.log(formValues[item.id])}
+                {formValues[item.id] &&
+                  formValues[item.id].map((options) => {
+                    return (
+                      <div className="form-check form-check-inline">
+                        <input
+                          className="form-check-input"
+                          type="radio"
+                          name="age"
+                          value="male"
+                        />
+                        <label className="form-check-label">
+                          {options.label}
+                        </label>
+                      </div>
+                    );
+                  })}
                 <div className="form-check form-check-inline">
                   <input
                     className="form-check-input"
@@ -126,6 +192,14 @@ function Output(props) {
                 </div>
                 <button
                   type="button"
+                  onClick={(e) => {
+                    addOptions(e, item.id);
+                  }}
+                >
+                  Add Options
+                </button>
+                <button
+                  type="button"
                   onClick={() => {
                     deleteQuestion(index);
                   }}
@@ -134,20 +208,34 @@ function Output(props) {
               </div>
             );
           }
-          if (item === "checkbox") {
+          if (item.type === "checkbox") {
             return (
               <div
                 key={index}
-                id={item}
+                id={item.id}
+                data-type={item.type}
                 className="field form-field"
                 draggable="true"
                 onDragStart={(e) => (dragItem.current = index)}
-                ref={itemRef}
+                // ref={itemRef}
                 onDragEnter={(e) => (dragOverItem.current = index)}
                 onDragEnd={handleSort}
                 onDragOver={dragOver}
               >
-                <p>What is your favriote color?</p>
+                <div
+                  className="editable"
+                  contentEditable
+                  suppressContentEditableWarning
+                  onBlur={(e) => console.log(e.currentTarget.textContent)}
+                  onKeyPress={(e) => {
+                    if (e.key === "13" || e.key === "Enter") {
+                      e.preventDefault();
+                      e.target.blur();
+                    }
+                  }}
+                >
+                  What is your favourite color?
+                </div>
                 <div className="form-check form-check-inline">
                   <input
                     className="form-check-input"
@@ -194,20 +282,34 @@ function Output(props) {
               </div>
             );
           }
-          if (item === "number") {
+          if (item.type === "number") {
             return (
               <div
                 key={index}
-                id={item}
+                id={item.id}
+                data-type={item.type}
                 className="field form-field"
                 draggable="true"
                 onDragStart={(e) => (dragItem.current = index)}
-                ref={itemRef}
+                // ref={itemRef}
                 onDragEnter={(e) => (dragOverItem.current = index)}
                 onDragEnd={handleSort}
                 onDragOver={dragOver}
               >
-                <p>What is your phone number?</p>
+                <div
+                  className="editable"
+                  contentEditable
+                  suppressContentEditableWarning
+                  onBlur={(e) => console.log(e.currentTarget.textContent)}
+                  onKeyPress={(e) => {
+                    if (e.key === "13" || e.key === "Enter") {
+                      e.preventDefault();
+                      e.target.blur();
+                    }
+                  }}
+                >
+                  What is your phone number?
+                </div>
                 <input
                   className="form-control"
                   type="number"
@@ -224,6 +326,7 @@ function Output(props) {
               </div>
             );
           }
+          return null;
         })
       ) : (
         <h2 className="text-center">Drop your questions here.</h2>
